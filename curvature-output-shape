@@ -1,0 +1,17 @@
+#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
+
+import os
+import msgpack
+import argparse
+import shapefile
+import sys
+
+parser = argparse.ArgumentParser(description='Output a Shape file')
+w = shapefile.Writer(shapefile.POLYLINE)
+
+unpacker = msgpack.Unpacker(sys.stdin, use_list=True)
+for item in unpacker:
+  w.line(parts=[item['points']])
+
+w.save(sys.argv[1])
